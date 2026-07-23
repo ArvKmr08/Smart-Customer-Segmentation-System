@@ -1,0 +1,31 @@
+# IMPORTING BASIC LIBRARIES
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# OPENING THE CSV FILE
+
+df = pd.read_csv("smartcart_customers.csv")
+df.head()
+
+# DATA PREPROCESSING
+
+df.shape
+df.isnull().sum()          # Checking for Null Values 
+
+# HANDELLING MISSING VALUES
+
+df["Income"] = df["Income"].fillna(df["Income"].median())
+
+# FEATURE ENGINEERING
+
+df["Age"] = 2026-df["Year_Birth"]    # Age
+
+df["Dt_Customer"] = pd.to_datetime(df["Dt_Customer"], dayfirst=True)      # Customer Joining Date
+
+reference_date = df["Dt_Customer"].max()
+
+df["Customer_Tenure_Days"] = (reference_date - df["Dt_Customer"]).dt.days
+
+df["Total_Children"] = df["Kidhome"] + df["Teenhome"]   # Children
