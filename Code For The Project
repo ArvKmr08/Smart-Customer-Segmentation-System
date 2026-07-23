@@ -29,3 +29,24 @@ reference_date = df["Dt_Customer"].max()
 df["Customer_Tenure_Days"] = (reference_date - df["Dt_Customer"]).dt.days
 
 df["Total_Children"] = df["Kidhome"] + df["Teenhome"]   # Children
+
+df["Education"] = df["Education"].replace({"Basic": "Undergraduate",   # Education
+                                          "Graduation" : "Graduate",
+                                          "2n Cycle": "Undergraduate",
+                                          "Master": "Postgraduate",
+                                          "PhD": "Postgraduate"})
+
+# Marital Status
+
+df["Living_With"] = df["Marital_Status"].replace({
+    "Married": "Partner", "Together": "Partner",
+    "Single": "Alone", "Divorced": "Alone",
+    "Widow": "Alone", "Absurd": "Alone", "YOLO": "Alone"
+})
+
+## DROPPING UNNECESSARY COLUMNS
+
+cols_to_drop = ["ID", "Year_Birth", "Marital_Status", "Kidhome", "Teenhome", "Dt_Customer","MntWines", "MntFruits",
+    "MntMeatProducts", "MntFishProducts", "MntSweetProducts", "MntGoldProds"]
+df_cleaned = df.drop(columns = cols_to_drop)
+df_cleaned.head()
